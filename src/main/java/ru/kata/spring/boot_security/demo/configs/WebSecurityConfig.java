@@ -32,16 +32,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .authorizeRequests() //авторизация запроса
+                .antMatchers("/admin/**").hasRole("ADMIN") // доступ для url admin
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN") //доступ для url user (две роли у пользователя)
                 .antMatchers("/", "/index").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated() //все запросы должны быть аутентифицированы и авторизованы
                 .and()
-                .formLogin().successHandler(successUserHandler)
-                .permitAll()
+                .formLogin().successHandler(successUserHandler)  //форма для ввода логина-пароля, по дефолту это /login
+                .permitAll() //доступно всем
                 .and()
-                .logout()
+                .logout()// настройка выхода
                 .permitAll();
     }
 
