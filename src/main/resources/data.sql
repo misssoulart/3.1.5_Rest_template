@@ -1,0 +1,3 @@
+-- insert into roles(role) values('USER'), ('ADMIN');
+-- insert into users(username, password, email, roles) values ('user', 'user', 'user@mail', 'USER');
+-- insert into users(username, password, email, roles) values ('admin', 'admin', 'admin@mail', 'ADMIN');
