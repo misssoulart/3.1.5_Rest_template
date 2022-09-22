@@ -8,4 +8,6 @@ public interface RoleDao {
     List<Role> listRoles();
     Role findByName(String name);
     List<Role> listByName(List<String> name);
+
+    boolean add(Role role);
 }
