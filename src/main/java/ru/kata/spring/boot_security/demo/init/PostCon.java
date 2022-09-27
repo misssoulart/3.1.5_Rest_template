@@ -38,19 +38,19 @@ public class PostCon {
         admin.setUsername("admin");
         admin.setFullName("admin");
         admin.setPassword("admin");
-        //admin.setEmail("admin@u");
-        //admin.setAge(18);
+        admin.setEmail("admin@u");
+        admin.setAge(1);
         admin.setPassword("admin");
-        //admin.setRoles(roleAdmin);
+        admin.setRoles(roleAdmin);
         userService.addUser(admin);
 
         User user = new User();
         user.setUsername("user");
         user.setFullName("user");
         user.setPassword("user");
-        //user.setEmail("user@u");
-        //user.setAge(1);
-        //user.setRoles(roleUser);
+        user.setEmail("user@u");
+        user.setAge(1);
+        user.setRoles(roleUser);
         userService.addUser(user);
     }
 }
