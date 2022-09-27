@@ -32,7 +32,7 @@ public class DataInitializer {
         User user1 = new User("admin", "admin", "ad@min",roleAdmin);
         User user2 = new User("user", "user",  "us@er", roleUser);
 
-        userService.add(user1);
-        userService.add(user2);
+        userService.addUser(user1);
+        userService.addUser(user2);
     }
 }

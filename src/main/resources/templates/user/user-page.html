@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <!-- JQuery-->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/main.js}"></script>
+</head>
+<body>
+<!-- Хедер -->
+<nav class="navbar navbar-dark bg-dark">
+      <span class="navbar-text text-white">
+          <a><strong><th:block th:text="${MainUser.getEmail()}"></th:block></strong></a>
+          with roles:<th:block th:each="role : ${MainUser.getRoles()}">
+                <span th:text="${role.getName()}"></span></th:block>
+
+  </span>
+  <a href="/logout" class="btn btn-outline-dark text-secondary active text-secondary"
+     aria-pressed="true" id="logout">Logout</a>
+</nav>
+<!-------------------------------------->
+<!--- ГЛАВНЫЙ КОНТЕЙНЕР -->
+<div class="container-fluid d-flex flex-row vh-100 p-0">
+  <!--- панель слева -->
+  <div>
+    <ul class="nav justify-content-left mt-3 mb-3">
+      <button type="button" class="btn pl-5 pr-5 btn-outline-primary active">User</button>
+    </ul>
+  </div>
+  <!----  таблица юзера   ---->
+  <div class="p-3 bg-light flex-grow-1">
+    <h1>User information page</h1>
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="allUsers" role="tabpanel" aria-labelledby="home-tab">
+        <div class="border bg-light rounded">
+          <h5 class="m-3">About user</h5>
+          <div class="pb-2 bg-white border-top row m-auto">
+            <table class="table table-striped m-3 ">
+              <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Age</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Roles</th>
+
+              </tr>
+              </thead>
+              <tbody id="userMain">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

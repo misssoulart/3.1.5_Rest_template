@@ -36,10 +36,14 @@ public class UserController {
 
     @PostMapping("create")
     public String createUser(/*@ModelAttribute("user") */User user) {
-        List<String> lsr = user.getRoles().stream().map(r->r.getRole()).collect(Collectors.toList());
+        List<String> lsr = new ArrayList<>();
+        for (Role r : user.getRoles()) {
+            Object role = r.getRole();
+            lsr.add((String) role);
+        }
         List<Role> liRo = userService.listByRole(lsr);
-        user.setRoles(liRo);
-        userService.add(user);
+        user.setRoles((Set<Role>) liRo);
+        userService.addUser(user);
         return "redirect:/admin";
     }
 
@@ -59,10 +63,14 @@ public class UserController {
 
     @PostMapping("update")
     public String updateUser(User user) {
-        List<String> lsr = user.getRoles().stream().map(r->r.getRole()).collect(Collectors.toList());
+        List<String> lsr = new ArrayList<>();
+        for (Role r : user.getRoles()) {
+            Object role = r.getRole();
+            lsr.add((String) role);
+        }
         List<Role> liRo = userService.listByRole(lsr);
-        user.setRoles(liRo);
-        userService.update(user);
+        user.setRoles((Set<Role>) liRo);
+        userService.updateUser(user);
         return "redirect:/admin";
     }
 }

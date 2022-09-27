@@ -4,58 +4,126 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "surname")
+    private String surname;
+
+    @Column(name = "email", unique = true)
+    private String email;
+
+    @Column(name = "age")
+    private int age;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
-    private String email;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="users_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
-
-    public User() {}
-
-    public User(String userName, String password, String email, List<Role> roles) {
-        this.username = userName;
-        this.password = password;
-        this.email = email;
-        this.roles = roles;
-    }
-
-    public User(Long id, String userName, String password, String email, List<Role> roles) {
+    public User(int id, String name, String surname, String email, int age, String password, Set<Role> roles) {
         this.id = id;
-        this.username = userName;
-        this.password = password;
+        this.name = name;
+        this.surname = surname;
         this.email = email;
+        this.age = age;
+        this.password = password;
         this.roles = roles;
     }
 
-    public Long getId() {
+    public User(String admin, String s, String s1, List<Role> roleAdmin) {
+
+    }
+
+    public User() {
+
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean hasRole(int roleId) {
+        if (null == roles || 0 == roles.size()) {
+            return false;
+        }
+        Optional<Role> findRole = roles.stream().filter(role -> roleId == role.getId()).findFirst();
+        return findRole.isPresent();
+    }
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 
     @Override
@@ -70,7 +138,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -93,32 +161,13 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return                 "id=" + id +
-                ", userName='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + getRoles();
+    public String rolesToString() {
+        Set<Role> roleSet = new TreeSet<Role>(Comparator.comparing(Role::getName));
+        roleSet.addAll(getRoles());
+        StringBuilder roles = new StringBuilder();
+        for (Role role : roleSet) {
+            roles.append(role.getName());
+        }
+        return roles.toString();
     }
 }
